@@ -1,0 +1,184 @@
+/* ============================================================
+   BASE · reset + design tokens
+   Paleta ITSM (institucional): vino/borgoña + oro cálido sobre crema.
+   Optimizado para Raspberry Pi 3: sin filter:blur, sin sombras
+   masivas. Aspecto editorial limpio.
+   ============================================================ */
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+a { color: inherit; text-decoration: none; }
+svg { display: block; }
+
+:root {
+  /* ===== Lienzo · crema/papel ===== */
+  --bg-0:        #f6efe2;   /* crema papel — fondo general */
+  --bg-1:        #fbf6ea;   /* crema clara — paneles flotantes */
+  --bg-2:        #ffffff;   /* blanco puro — terminales / tarjetas elevadas */
+  --bg-card:     #ffffff;
+  --bg-card-2:   #fbf6ea;
+  --bg-ink:      #1f1612;   /* tinta oscura — para terminales y rack */
+
+  /* Grids decorativas (muy tenues sobre crema) */
+  --grid:        rgba(120, 80, 48, 0.06);
+  --grid-strong: rgba(120, 80, 48, 0.12);
+
+  /* ===== Texto ===== */
+  --text:        #261912;   /* tinta principal */
+  --text-mut:    #6b5847;   /* texto secundario */
+  --text-dim:    #a8957e;   /* texto terciario */
+  --text-invert: #f6efe2;   /* texto sobre fondo oscuro */
+
+  /* ===== Bordes ===== */
+  --line:        #e7dac1;
+  --line-2:      #d5c3a0;
+  --line-ink:    #2a1d15;
+
+  /* ===== ITSM · marca ===== */
+  --wine:        #8a1f2b;   /* vino/borgoña institucional */
+  --wine-deep:   #6b1721;
+  --wine-soft:   rgba(138, 31, 43, 0.10);
+  --wine-tint:   #f3e8ea;   /* vino 10% sobre blanco — opaco, para fondos hover */
+  --wine-line:   rgba(138, 31, 43, 0.28);
+
+  --gold:        #b8945a;   /* oro cálido del escudo */
+  --gold-deep:   #8f6e3c;
+  --gold-soft:   rgba(184, 148, 90, 0.16);
+  --gold-line:   rgba(184, 148, 90, 0.45);
+
+  /* ===== Acento principal (alias) ===== */
+  --acc:         var(--wine);
+  --acc-2:       var(--wine-deep);
+  --acc-soft:    var(--wine-soft);
+
+  /* ===== VLAN colors — armonizadas a la paleta cálida ===== */
+  --vlan-10:     #1f6b8f;   /* Alumnos — azul petróleo (contraste sobre crema) */
+  --vlan-20:     #c2417a;   /* Profesor — rosa-vino */
+  --vlan-30:     #2f7a52;   /* Servidores — verde bosque */
+  --vlan-trunk:  #b8945a;   /* Trunk multi-VLAN — oro de la marca */
+  --vlan-wan:    #6e4a8a;   /* WAN — violeta apagado */
+
+  /* Variantes "soft" para fondos de píldoras */
+  --vlan-10-soft: rgba(31, 107, 143, 0.12);
+  --vlan-20-soft: rgba(194, 65, 122, 0.12);
+  --vlan-30-soft: rgba(47, 122, 82, 0.12);
+
+  /* ===== Estados ===== */
+  --ok:          #3a8a5e;
+  --warn:        #c98a2a;
+  --err:         #a8323e;
+
+  /* ===== Tipografía =====
+     Display: serif del sistema (cero descargas, sabor editorial)
+     UI:      sans-serif del sistema
+     Mono:    monoespaciada del sistema */
+  --font-display: "Iowan Old Style", "Apple Garamond", "Hoefler Text",
+                  Georgia, "Times New Roman", Cambria, serif;
+  --font-ui:      ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+                  Roboto, "Helvetica Neue", sans-serif;
+  --font-mono:    ui-monospace, "JetBrains Mono", "Cascadia Code",
+                  "Fira Code", Consolas, monospace;
+
+  /* ===== Radios ===== */
+  --r-sm: 4px;
+  --r-md: 8px;
+  --r-lg: 12px;
+  --r-xl: 16px;
+
+  /* ===== Animaciones ===== */
+  --ease: cubic-bezier(.4, 0, .2, 1);
+  --t-fast: 140ms;
+  --t-mid:  240ms;
+  --t-slow: 480ms;
+
+  /* ===== Sombras institucionales ===== */
+  --shadow-sm: 0 1px 0 rgba(40, 25, 15, 0.04);
+  --shadow-md: 0 1px 2px rgba(40, 25, 15, 0.06),
+               0 4px 12px rgba(40, 25, 15, 0.04);
+}
+
+html, body {
+  background: var(--bg-0);
+  color: var(--text);
+  font-family: var(--font-ui);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Respetar movimiento reducido */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0ms !important;
+  }
+}
+
+/* Scrollbar discreta */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-thumb { background: var(--line-2); border-radius: 8px; }
+::-webkit-scrollbar-thumb:hover { background: var(--gold); }
+::-webkit-scrollbar-track { background: transparent; }
+
+/* Selección con tinta de marca */
+::selection { background: var(--gold-soft); color: var(--wine-deep); }
+
+/* ===== Utilidades ===== */
+.kbd {
+  display: inline-block;
+  padding: 1px 6px;
+  border: 1px solid var(--line-2);
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text);
+  background: var(--bg-1);
+}
+
+.dot {
+  display: inline-block;
+  width: 8px; height: 8px;
+  border-radius: 999px;
+  background: var(--text-dim);
+}
+.dot--ok { background: var(--ok); box-shadow: 0 0 0 3px rgba(58, 138, 94, 0.18); }
+
+/* ===== Fondos decorativos — papel con malla muy tenue ===== */
+
+/* Trama de cuadrícula tipo papel milimétrico, casi imperceptible */
+.bg-grid {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background:
+    linear-gradient(var(--grid) 1px, transparent 1px) 0 0 / 48px 48px,
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px) 0 0 / 48px 48px,
+    radial-gradient(ellipse 90% 60% at 50% -10%, rgba(138, 31, 43, 0.045), transparent 70%),
+    radial-gradient(ellipse 70% 50% at 100% 110%, rgba(184, 148, 90, 0.055), transparent 70%),
+    var(--bg-0);
+}
+
+/* Halos de marca — borgoña arriba, oro abajo. Muy suaves. */
+.bg-halo {
+  position: fixed;
+  z-index: -1;
+  pointer-events: none;
+  border-radius: 50%;
+  opacity: 0.7;
+}
+.bg-halo--a {
+  width: 680px; height: 680px;
+  top: -260px; left: -220px;
+  background: radial-gradient(circle, rgba(138, 31, 43, 0.10), transparent 62%);
+}
+.bg-halo--b {
+  width: 760px; height: 760px;
+  bottom: -320px; right: -280px;
+  background: radial-gradient(circle, rgba(184, 148, 90, 0.13), transparent 62%);
+}

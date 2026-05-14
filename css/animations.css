@@ -1,0 +1,57 @@
+/* ============================================================
+   ANIMATIONS · ligeras (transform + opacity)
+   Sin color directo: los colores vienen siempre de las reglas
+   base, que ya usan la paleta ITSM (vino + oro + crema).
+   ============================================================ */
+
+/* Entrada al cambiar de vista — fade + sutil deslizamiento */
+.view.is-active {
+  animation: viewIn 380ms var(--ease) both;
+}
+@keyframes viewIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Aparición suave del halo de cada nodo SVG */
+.topo .node__halo {
+  animation: nodeFadeIn 600ms var(--ease) both;
+}
+@keyframes nodeFadeIn {
+  from { opacity: 0; transform: scale(0.88); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* Flujo en trunks (líneas punteadas oro) — solo cuando body.is-running */
+body.is-running .topo .link[data-kind="cruzado"] .link-line {
+  animation: dashFlow 4.5s linear infinite;
+}
+@keyframes dashFlow {
+  to { stroke-dashoffset: -120; }
+}
+
+/* Latido sutil del paquete en simulación */
+.topo .packet, .topo .packet__halo {
+  animation: packetPulse 1500ms ease-in-out infinite alternate;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+@keyframes packetPulse {
+  from { transform: scale(0.94); }
+  to   { transform: scale(1.08); }
+}
+
+/* Aparición del panel lateral al seleccionar algo */
+.detail.is-fresh {
+  animation: detailIn 300ms var(--ease) both;
+}
+@keyframes detailIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Shimmer discreto (utilidad opcional para skeletons) */
+@keyframes shimmer {
+  0%, 100% { opacity: 0.55; }
+  50%      { opacity: 1; }
+}

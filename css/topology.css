@@ -1,0 +1,227 @@
+/* ============================================================
+   TOPOLOGY · SVG styling
+   Adaptado al fondo claro: trazos sólidos, halos suaves de marca,
+   etiquetas con borde crema para contraste sobre cualquier enlace.
+   ============================================================ */
+
+.topo {
+  width: 100%;
+  height: auto;
+  max-height: calc(100vh - 130px);
+  min-height: 560px;
+  cursor: default;
+}
+
+/* ===== Enlaces ===== */
+.topo .link-glow {
+  fill: none;
+  stroke-linecap: round;
+  stroke-width: 6;
+  opacity: 0.08;
+  transition: opacity var(--t-mid) var(--ease),
+              stroke-width var(--t-mid) var(--ease);
+}
+.topo .link-line {
+  fill: none;
+  stroke-linecap: round;
+  stroke-width: 2.2;
+  transition: stroke-width var(--t-fast) var(--ease),
+              stroke var(--t-fast) var(--ease);
+}
+
+/* Color por tipo de enlace */
+.topo .link[data-kind="directo"] .link-line  { stroke: var(--wine); }
+.topo .link[data-kind="directo"] .link-glow  { stroke: var(--wine); }
+.topo .link[data-kind="cruzado"] .link-line  { stroke: var(--vlan-trunk); stroke-dasharray: 7 6; stroke-width: 2.6; }
+.topo .link[data-kind="cruzado"] .link-glow  { stroke: var(--vlan-trunk); }
+.topo .link[data-kind="fijo"]    .link-line  { stroke: var(--text-mut); stroke-dasharray: 2 5; }
+.topo .link[data-kind="fijo"]    .link-glow  { stroke: var(--text-mut); }
+.topo .link[data-kind="wan"]     .link-line  { stroke: var(--vlan-wan); }
+.topo .link[data-kind="wan"]     .link-glow  { stroke: var(--vlan-wan); }
+
+/* Hover/selección */
+.topo .link { cursor: pointer; }
+.topo .link:hover .link-line    { stroke-width: 3.2; }
+.topo .link:hover .link-glow    { opacity: 0.18; stroke-width: 10; }
+.topo .link.is-selected .link-line { stroke-width: 3.6; }
+.topo .link.is-selected .link-glow { opacity: 0.24; stroke-width: 12; }
+
+/* Etiqueta VLAN sobre trunks */
+.topo .link__tag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  fill: var(--gold-deep);
+  paint-order: stroke;
+  stroke: var(--bg-card);
+  stroke-width: 4;
+  stroke-linejoin: round;
+  letter-spacing: 0.4px;
+}
+
+/* Filtrado por VLAN */
+.topo.is-filtered .link:not(.match-vlan) .link-line {
+  stroke: var(--text-dim);
+  opacity: 0.22;
+  stroke-dasharray: 2 4;
+}
+.topo.is-filtered .link:not(.match-vlan) .link-glow { opacity: 0.04; }
+
+/* ===== Nodos ===== */
+.topo .node {
+  cursor: pointer;
+  transition: transform var(--t-mid) var(--ease);
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.topo .node:hover { transform: translateY(-2px); }
+.topo .node__pad { fill: transparent; }
+
+.topo .node__halo {
+  fill: var(--bg-card);
+  stroke: var(--line-2);
+  stroke-width: 1.6;
+  transition: stroke var(--t-fast) var(--ease),
+              fill var(--t-fast) var(--ease),
+              stroke-width var(--t-fast) var(--ease);
+}
+.topo .node:hover .node__halo,
+.topo .node.is-selected .node__halo {
+  stroke: var(--wine);
+  stroke-width: 2.2;
+  fill: var(--wine-tint);
+}
+
+.topo .node__icon {
+  stroke: var(--wine);
+  stroke-width: 1.6;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.topo .node__icon-fill { fill: var(--wine); }
+
+/* Anillo coloreado por tipo */
+.topo .node[data-type="router"]        .node__halo { stroke: var(--vlan-wan); }
+.topo .node[data-type="switch_core"]   .node__halo { stroke: var(--wine); }
+.topo .node[data-type="switch_access"] .node__halo { stroke: var(--gold); }
+.topo .node[data-type="server"]        .node__halo { stroke: var(--vlan-30); }
+.topo .node[data-type="patch"]         .node__halo { stroke: var(--line-2); }
+.topo .node[data-type="laptop"]        .node__halo { stroke: var(--vlan-10); }
+.topo .node[data-type="cloud"]         .node__halo { stroke: var(--vlan-wan); }
+
+/* Color por VLAN del nodo (laptops/mesas) */
+.topo .node[data-vlan="20"] .node__halo { stroke: var(--vlan-20); }
+.topo .node[data-vlan="30"] .node__halo { stroke: var(--vlan-30); }
+
+/* Iconos también heredan el color por tipo */
+.topo .node[data-type="router"]        .node__icon { stroke: var(--vlan-wan); }
+.topo .node[data-type="switch_access"] .node__icon { stroke: var(--gold-deep); }
+.topo .node[data-type="server"]        .node__icon { stroke: var(--vlan-30); }
+.topo .node[data-type="laptop"]        .node__icon { stroke: var(--vlan-10); }
+.topo .node[data-type="cloud"]         .node__icon { stroke: var(--vlan-wan); }
+.topo .node[data-type="router"]        .node__icon-fill { fill: var(--vlan-wan); }
+.topo .node[data-type="switch_access"] .node__icon-fill { fill: var(--gold-deep); }
+.topo .node[data-type="server"]        .node__icon-fill { fill: var(--vlan-30); }
+.topo .node[data-type="laptop"]        .node__icon-fill { fill: var(--vlan-10); }
+.topo .node[data-type="cloud"]         .node__icon-fill { fill: var(--vlan-wan); }
+.topo .node[data-vlan="20"]            .node__icon { stroke: var(--vlan-20); }
+.topo .node[data-vlan="20"]            .node__icon-fill { fill: var(--vlan-20); }
+.topo .node[data-vlan="30"]            .node__icon { stroke: var(--vlan-30); }
+.topo .node[data-vlan="30"]            .node__icon-fill { fill: var(--vlan-30); }
+
+/* Textos */
+.topo .node__label {
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 700;
+  fill: var(--text);
+  text-anchor: middle;
+  paint-order: stroke;
+  stroke: var(--bg-card);
+  stroke-width: 3.5;
+  stroke-linejoin: round;
+}
+.topo .node__sub {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  fill: var(--text-mut);
+  text-anchor: middle;
+  paint-order: stroke;
+  stroke: var(--bg-card);
+  stroke-width: 3;
+  stroke-linejoin: round;
+  letter-spacing: 0.3px;
+}
+
+/* Filtrado por VLAN: atenuar no coincidentes */
+.topo.is-filtered .node:not(.match-vlan) .node__halo { stroke: var(--text-dim); opacity: 0.4; }
+.topo.is-filtered .node:not(.match-vlan) .node__icon { stroke: var(--text-dim); opacity: 0.45; }
+.topo.is-filtered .node:not(.match-vlan) .node__icon-fill { fill: var(--text-dim); opacity: 0.45; }
+.topo.is-filtered .node:not(.match-vlan) .node__label,
+.topo.is-filtered .node:not(.match-vlan) .node__sub { opacity: 0.4; }
+
+/* ===== Paquete animado =====
+   Sin filter: drop-shadow (caro en la Pi 3 y daba estética neón).
+   El "halo" se hace con un círculo concéntrico de menor opacidad. */
+.topo .packet {
+  r: 6;
+  fill: var(--wine);
+  stroke: var(--bg-card);
+  stroke-width: 1.5;
+}
+.topo .packet--v10 { fill: var(--vlan-10); }
+.topo .packet--v20 { fill: var(--vlan-20); }
+.topo .packet--v30 { fill: var(--vlan-30); }
+.topo .packet__halo {
+  r: 14;
+  fill: var(--wine);
+  opacity: 0.18;
+}
+.topo .packet__halo.packet--v10 { fill: var(--vlan-10); }
+.topo .packet__halo.packet--v20 { fill: var(--vlan-20); }
+.topo .packet__halo.packet--v30 { fill: var(--vlan-30); }
+
+/* Pulso del nodo en simulación */
+.topo .node.is-pulsing .node__halo {
+  animation: nodePulse 1200ms var(--ease) infinite;
+}
+@keyframes nodePulse {
+  0%, 100% { stroke-width: 1.6; }
+  50%      { stroke-width: 3.4; }
+}
+
+/* Enlace activo durante simulación */
+.topo .link.is-active .link-line { stroke-width: 3.6; }
+.topo .link.is-active .link-glow { opacity: 0.30; stroke-width: 12; }
+
+/* ===== Leyenda ===== */
+.legend {
+  position: absolute;
+  top: 14px; left: 18px;
+  display: flex; gap: 16px; flex-wrap: wrap;
+  font-size: 11px;
+  color: var(--text-mut);
+  font-family: var(--font-mono);
+  letter-spacing: 0.3px;
+  z-index: 2;
+  background: var(--bg-card);
+  padding: 7px 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  box-shadow: var(--shadow-sm);
+}
+.legend__item { display: inline-flex; align-items: center; gap: 6px; }
+.legend__line {
+  display: inline-block; width: 22px; height: 2px; border-radius: 2px;
+}
+.legend__line--trunk  { background: var(--vlan-trunk); position: relative; }
+.legend__line--trunk::after {
+  content: ""; position: absolute; inset: 0;
+  background: repeating-linear-gradient(90deg, var(--vlan-trunk) 0 4px, transparent 4px 8px);
+}
+.legend__line--access { background: var(--wine); }
+.legend__line--fixed  {
+  background: repeating-linear-gradient(90deg, var(--text-mut) 0 2px, transparent 2px 6px);
+}
+.legend__line--wan    { background: var(--vlan-wan); }
