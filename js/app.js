@@ -461,7 +461,8 @@ function buildGraph() {
   return adj;
 }
 
-function findPath(fromId, toId) {
+// BFS genérico — solo usado como fallback para casos no contemplados
+function findPathBFS(fromId, toId) {
   if (fromId === toId) return [];
   var adj = buildGraph();
   var queue = [[fromId, []]];
@@ -480,6 +481,134 @@ function findPath(fromId, toId) {
     }
   }
   return null;
+}
+
+// Ruta física real de la red:
+//   Mesa 1/2/3 → Patch Panel → Cisco 1 → TP-Link → Gateway → …
+//   Mesa 4     → Patch Panel → Cisco 2 → TP-Link → Gateway → …
+//   Inter-VLAN siempre pasa por el Gateway ER605
+function findPath(fromId, toId) {
+  if (fromId === toId) return [];
+
+  function lk(id) { return LINKS.find(function(l){ return l.id === id; }) || null; }
+
+  // Tablas de correspondencia fijas para esta topología
+  var CISCO_OF = { mesa1: 'cisco1', mesa2: 'cisco1', mesa3: 'cisco1', mesa4: 'cisco2' };
+  var PP_OF    = { mesa1: 'l_pp_m1', mesa2: 'l_pp_m2', mesa3: 'l_pp_m3', mesa4: 'l_pp_m4' };
+  var CPP_OF   = { cisco1: 'l_c1_pp', cisco2: 'l_c2_pp' };
+  var CSW_OF   = { cisco1: 'l_sw_c1', cisco2: 'l_sw_c2' };
+  var ALL_MESAS = ['mesa1', 'mesa2', 'mesa3', 'mesa4'];
+
+  function isMesa(id) { return ALL_MESAS.indexOf(id) >= 0; }
+  function isCisco(id) { return id === 'cisco1' || id === 'cisco2'; }
+
+  // IDs de enlaces desde una mesa hasta sw_central (subida)
+  function mesaUpIds(mesaId) {
+    var c = CISCO_OF[mesaId];
+    return [PP_OF[mesaId], CPP_OF[c], CSW_OF[c]];
+  }
+  // IDs de enlaces desde sw_central hasta una mesa (bajada)
+  function swDownIds(mesaId) {
+    var c = CISCO_OF[mesaId];
+    return [CSW_OF[c], CPP_OF[c], PP_OF[mesaId]];
+  }
+
+  function ids(arr) { return arr.map(lk).filter(Boolean); }
+
+  // ─── mesa ↔ mesa ──────────────────────────────────────────
+  if (isMesa(fromId) && isMesa(toId)) {
+    var sc = CISCO_OF[fromId], dc = CISCO_OF[toId];
+    if (sc === dc) {
+      // Misma VLAN, mismo switch:  mesa→patch→cisco→patch→mesa
+      var cpp = CPP_OF[sc];
+      return ids([PP_OF[fromId], cpp, cpp, PP_OF[toId]]);
+    }
+    // VLANs distintas: sube por su cisco, cruza gateway, baja por el otro cisco
+    return ids(mesaUpIds(fromId).concat(['l_gw_sw', 'l_gw_sw']).concat(swDownIds(toId)));
+  }
+
+  // ─── mesa ↔ pi ────────────────────────────────────────────
+  if (isMesa(fromId) && toId === 'pi')
+    return ids(mesaUpIds(fromId).concat(['l_gw_sw', 'l_gw_sw', 'l_sw_pi']));
+  if (fromId === 'pi' && isMesa(toId))
+    return ids(['l_sw_pi', 'l_gw_sw', 'l_gw_sw'].concat(swDownIds(toId)));
+
+  // ─── mesa ↔ gateway ───────────────────────────────────────
+  if (isMesa(fromId) && toId === 'gateway')
+    return ids(mesaUpIds(fromId).concat(['l_gw_sw']));
+  if (fromId === 'gateway' && isMesa(toId))
+    return ids(['l_gw_sw'].concat(swDownIds(toId)));
+
+  // ─── mesa ↔ sw_central ────────────────────────────────────
+  if (isMesa(fromId) && toId === 'sw_central') return ids(mesaUpIds(fromId));
+  if (fromId === 'sw_central' && isMesa(toId)) return ids(swDownIds(toId));
+
+  // ─── mesa ↔ internet ──────────────────────────────────────
+  if (isMesa(fromId) && toId === 'internet')
+    return ids(mesaUpIds(fromId).concat(['l_gw_sw', 'l_wan']));
+  if (fromId === 'internet' && isMesa(toId))
+    return ids(['l_wan', 'l_gw_sw'].concat(swDownIds(toId)));
+
+  // ─── mesa ↔ cisco ─────────────────────────────────────────
+  if (isMesa(fromId) && isCisco(toId)) {
+    var sc2 = CISCO_OF[fromId];
+    if (sc2 === toId) return ids([PP_OF[fromId], CPP_OF[sc2]]);
+    return ids(mesaUpIds(fromId).concat([CSW_OF[toId]]));
+  }
+  if (isCisco(fromId) && isMesa(toId)) {
+    var dc2 = CISCO_OF[toId];
+    if (fromId === dc2) return ids([CPP_OF[fromId], PP_OF[toId]]);
+    return ids([CSW_OF[fromId], 'l_gw_sw', 'l_gw_sw'].concat(swDownIds(toId)));
+  }
+
+  // ─── pi ↔ gateway ─────────────────────────────────────────
+  if (fromId === 'pi' && toId === 'gateway') return ids(['l_sw_pi', 'l_gw_sw']);
+  if (fromId === 'gateway' && toId === 'pi')  return ids(['l_gw_sw', 'l_sw_pi']);
+
+  // ─── pi ↔ sw_central ──────────────────────────────────────
+  if (fromId === 'pi' && toId === 'sw_central') return [lk('l_sw_pi')];
+  if (fromId === 'sw_central' && toId === 'pi') return [lk('l_sw_pi')];
+
+  // ─── pi ↔ internet ────────────────────────────────────────
+  if (fromId === 'pi' && toId === 'internet') return ids(['l_sw_pi', 'l_gw_sw', 'l_wan']);
+  if (fromId === 'internet' && toId === 'pi') return ids(['l_wan', 'l_gw_sw', 'l_sw_pi']);
+
+  // ─── pi ↔ cisco ───────────────────────────────────────────
+  if (fromId === 'pi' && isCisco(toId))
+    return ids(['l_sw_pi', 'l_gw_sw', 'l_gw_sw', CSW_OF[toId]]);
+  if (isCisco(fromId) && toId === 'pi')
+    return ids([CSW_OF[fromId], 'l_gw_sw', 'l_gw_sw', 'l_sw_pi']);
+
+  // ─── gateway ↔ sw_central ─────────────────────────────────
+  if ((fromId === 'gateway' && toId === 'sw_central') ||
+      (fromId === 'sw_central' && toId === 'gateway')) return [lk('l_gw_sw')];
+
+  // ─── gateway ↔ internet ───────────────────────────────────
+  if ((fromId === 'gateway' && toId === 'internet') ||
+      (fromId === 'internet' && toId === 'gateway')) return [lk('l_wan')];
+
+  // ─── gateway ↔ cisco ──────────────────────────────────────
+  if (fromId === 'gateway' && isCisco(toId)) return ids(['l_gw_sw', CSW_OF[toId]]);
+  if (isCisco(fromId) && toId === 'gateway') return ids([CSW_OF[fromId], 'l_gw_sw']);
+
+  // ─── sw_central ↔ cisco ───────────────────────────────────
+  if (fromId === 'sw_central' && isCisco(toId)) return [lk(CSW_OF[toId])];
+  if (isCisco(fromId) && toId === 'sw_central') return [lk(CSW_OF[fromId])];
+
+  // ─── sw_central ↔ internet ────────────────────────────────
+  if (fromId === 'sw_central' && toId === 'internet') return ids(['l_gw_sw', 'l_wan']);
+  if (fromId === 'internet' && toId === 'sw_central') return ids(['l_wan', 'l_gw_sw']);
+
+  // ─── cisco ↔ cisco ────────────────────────────────────────
+  if (isCisco(fromId) && isCisco(toId))
+    return ids([CSW_OF[fromId], 'l_gw_sw', 'l_gw_sw', CSW_OF[toId]]);
+
+  // ─── internet ↔ cisco ─────────────────────────────────────
+  if (fromId === 'internet' && isCisco(toId)) return ids(['l_wan', 'l_gw_sw', CSW_OF[toId]]);
+  if (isCisco(fromId) && toId === 'internet') return ids([CSW_OF[fromId], 'l_gw_sw', 'l_wan']);
+
+  // Fallback BFS para cualquier caso no contemplado
+  return findPathBFS(fromId, toId);
 }
 
 function simulate(svgId, fromId, toId) {
@@ -538,7 +667,11 @@ function simulate(svgId, fromId, toId) {
       dot.setAttribute('cx', p.x);  dot.setAttribute('cy', p.y);
       if (t < 1) { requestAnimationFrame(frame); }
       else {
-        setTimeout(function(){ if(linkG) linkG.classList.remove('is-active'); }, 250);
+        // Solo quitar is-active si el siguiente paso NO usa el mismo enlace
+        var nextItem = ordered[i + 1];
+        if (!nextItem || nextItem.link.id !== item.link.id) {
+          (function(g){ setTimeout(function(){ if(g) g.classList.remove('is-active'); }, 250); })(linkG);
+        }
         i++; runStep();
       }
     }
