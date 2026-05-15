@@ -7,11 +7,6 @@
 <link rel="preload" href="css/base.css" as="style">
 <link rel="stylesheet" href="css/base.css">
 <style>
-body {
-  background: #1f1612;
-  color: #f6efe2;
-}
-
 /* NAV */
 .ld-nav {
   position: fixed;
@@ -22,8 +17,9 @@ body {
   justify-content: space-between;
   padding: 0 2rem;
   height: 56px;
-  border-bottom: 1px solid rgba(255,255,255,0.07);
-  background: rgba(31,22,18,0.95);
+  background: rgba(246, 239, 226, 0.94);
+  border-bottom: 1px solid var(--line);
+  box-shadow: inset 0 3px 0 var(--gold);
 }
 .ld-nav__brand {
   display: flex;
@@ -31,7 +27,8 @@ body {
   gap: 0.75rem;
   font-family: var(--font-display);
   font-size: 1.05rem;
-  color: #f6efe2;
+  font-weight: 700;
+  color: var(--wine);
 }
 .ld-nav__links {
   display: flex;
@@ -39,7 +36,7 @@ body {
   font-size: 0.78rem;
   letter-spacing: 0.07em;
   text-transform: uppercase;
-  color: rgba(246,239,226,0.45);
+  color: var(--text-mut);
 }
 .ld-nav__links a { transition: color var(--t-fast) var(--ease); }
 .ld-nav__links a:hover { color: var(--gold); }
@@ -57,8 +54,8 @@ body {
   color: #f6efe2;
 }
 .ld-btn:hover { background: var(--wine-deep); transform: translateY(-1px); }
-.ld-btn--gold { background: var(--gold); color: #1f1612; }
-.ld-btn--gold:hover { background: var(--gold-deep); }
+.ld-btn--gold { background: var(--gold); color: var(--wine-deep); }
+.ld-btn--gold:hover { background: var(--gold-deep); color: #f6efe2; }
 .ld-btn--lg { padding: 0.85rem 2.4rem; font-size: 0.95rem; }
 
 /* HERO */
@@ -77,15 +74,15 @@ body {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(rgba(184,148,90,0.035) 1px, transparent 1px) 0 0 / 60px 60px,
-    linear-gradient(90deg, rgba(184,148,90,0.035) 1px, transparent 1px) 0 0 / 60px 60px;
+    linear-gradient(var(--grid) 1px, transparent 1px) 0 0 / 60px 60px,
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px) 0 0 / 60px 60px;
   pointer-events: none;
 }
 .hero::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse 80% 70% at 70% 50%, rgba(184,148,90,0.04), transparent 60%);
+  background: radial-gradient(ellipse 80% 70% at 70% 50%, rgba(184,148,90,0.07), transparent 60%);
   pointer-events: none;
 }
 .hero__content {
@@ -101,7 +98,7 @@ body {
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--gold);
+  color: var(--gold-deep);
   margin-bottom: 1.5rem;
 }
 .hero__kicker::before {
@@ -115,17 +112,17 @@ body {
   font-size: clamp(2.6rem, 5vw, 4rem);
   line-height: 1.08;
   font-weight: normal;
-  color: #f6efe2;
+  color: var(--wine);
   margin: 0 0 1.5rem;
 }
 .hero__title em {
   font-style: italic;
-  color: var(--gold);
+  color: var(--gold-deep);
 }
 .hero__sub {
   font-size: 1rem;
   line-height: 1.72;
-  color: rgba(246,239,226,0.62);
+  color: var(--text-mut);
   margin-bottom: 2.5rem;
   max-width: 460px;
 }
@@ -137,7 +134,8 @@ body {
 }
 .hero__note {
   font-size: 0.73rem;
-  color: rgba(246,239,226,0.35);
+  color: var(--text-dim);
+  font-family: var(--font-mono);
 }
 .hero__visual {
   position: relative;
@@ -152,13 +150,12 @@ body {
 .strip {
   display: flex;
   align-items: center;
-  gap: 2.5rem;
   padding: 0.9rem 3rem;
-  border-top: 1px solid rgba(255,255,255,0.05);
-  border-bottom: 1px solid rgba(255,255,255,0.05);
-  background: rgba(255,255,255,0.02);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  background: var(--bg-1);
   font-size: 0.73rem;
-  color: rgba(246,239,226,0.38);
+  color: var(--text-mut);
   font-family: var(--font-mono);
   flex-wrap: wrap;
   gap: 1.5rem;
@@ -178,20 +175,20 @@ body {
   font-weight: 600;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: var(--gold);
+  color: var(--gold-deep);
   margin-bottom: 0.6rem;
 }
 .section__title {
   font-family: var(--font-display);
   font-size: clamp(1.9rem, 3.5vw, 2.9rem);
   font-weight: normal;
-  color: #f6efe2;
+  color: var(--wine);
   margin: 0 0 1rem;
   line-height: 1.18;
 }
 .section__sub {
   font-size: 0.95rem;
-  color: rgba(246,239,226,0.55);
+  color: var(--text-mut);
   max-width: 520px;
   line-height: 1.72;
   margin-bottom: 3rem;
@@ -202,18 +199,18 @@ body {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 1px;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.06);
+  background: var(--line);
+  border: 1px solid var(--line);
   border-radius: var(--r-lg);
   overflow: hidden;
 }
 .feat {
-  background: #1f1612;
+  background: var(--bg-card);
   padding: 2rem 1.5rem;
   transition: background var(--t-mid) var(--ease);
   animation: fadeUp 0.7s var(--ease) both;
 }
-.feat:hover { background: rgba(255,255,255,0.03); }
+.feat:hover { background: var(--bg-1); }
 .feat__icon {
   width: 40px; height: 40px;
   border-radius: var(--r-md);
@@ -222,8 +219,8 @@ body {
   justify-content: center;
   margin-bottom: 1.25rem;
 }
-.feat__title { font-size: 0.9rem; font-weight: 600; color: #f6efe2; margin-bottom: 0.5rem; }
-.feat__desc { font-size: 0.78rem; color: rgba(246,239,226,0.46); line-height: 1.6; }
+.feat__title { font-size: 0.9rem; font-weight: 600; color: var(--text); margin-bottom: 0.5rem; }
+.feat__desc { font-size: 0.78rem; color: var(--text-mut); line-height: 1.6; }
 .feat:nth-child(1) { animation-delay: 0.05s; }
 .feat:nth-child(2) { animation-delay: 0.12s; }
 .feat:nth-child(3) { animation-delay: 0.19s; }
@@ -235,9 +232,10 @@ body {
   display: flex;
   flex-direction: column;
   gap: 1px;
-  border: 1px solid rgba(255,255,255,0.07);
+  border: 1px solid var(--line);
   border-radius: var(--r-lg);
   overflow: hidden;
+  background: var(--line);
 }
 .layer {
   display: grid;
@@ -245,18 +243,18 @@ body {
   align-items: center;
   gap: 1.5rem;
   padding: 1.25rem 1.5rem;
-  background: rgba(255,255,255,0.018);
+  background: var(--bg-card);
   transition: background var(--t-fast) var(--ease);
 }
-.layer:hover { background: rgba(255,255,255,0.045); }
+.layer:hover { background: var(--bg-1); }
 .layer__num {
   font-family: var(--font-mono);
   font-size: 0.68rem;
-  color: rgba(246,239,226,0.2);
+  color: var(--text-dim);
   text-align: right;
 }
-.layer__title { font-size: 0.88rem; font-weight: 600; color: #f6efe2; margin-bottom: 0.2rem; }
-.layer__desc { font-size: 0.76rem; color: rgba(246,239,226,0.46); }
+.layer__title { font-size: 0.88rem; font-weight: 600; color: var(--text); margin-bottom: 0.2rem; }
+.layer__desc { font-size: 0.76rem; color: var(--text-mut); }
 .layer__badge {
   font-family: var(--font-mono);
   font-size: 0.67rem;
@@ -265,22 +263,22 @@ body {
   white-space: nowrap;
   font-weight: 600;
 }
-.badge--directo { background: rgba(47,122,82,0.18); color: #5acb8a; border: 1px solid rgba(47,122,82,0.28); }
-.badge--cruzado { background: rgba(184,148,90,0.14); color: var(--gold); border: 1px solid rgba(184,148,90,0.28); }
-.badge--fijo { background: rgba(31,107,143,0.14); color: #5ac4ea; border: 1px solid rgba(31,107,143,0.28); }
+.badge--directo { background: rgba(47,122,82,0.12); color: #2f7a52; border: 1px solid rgba(47,122,82,0.28); }
+.badge--cruzado { background: rgba(184,148,90,0.14); color: var(--gold-deep); border: 1px solid rgba(184,148,90,0.32); }
+.badge--fijo { background: rgba(31,107,143,0.12); color: #1f6b8f; border: 1px solid rgba(31,107,143,0.28); }
 
 /* VLAN CARDS */
 .vlans { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
 .vlan-card {
   border-radius: var(--r-lg);
-  border: 1px solid rgba(255,255,255,0.07);
+  border: 1px solid var(--line);
   padding: 1.75rem;
   position: relative;
   overflow: hidden;
-  transition: transform var(--t-mid) var(--ease), border-color var(--t-mid) var(--ease);
-  background: rgba(255,255,255,0.018);
+  transition: transform var(--t-mid) var(--ease), border-color var(--t-mid) var(--ease), box-shadow var(--t-mid) var(--ease);
+  background: var(--bg-card);
 }
-.vlan-card:hover { transform: translateY(-5px); border-color: rgba(255,255,255,0.13); }
+.vlan-card:hover { transform: translateY(-5px); border-color: var(--line-2); box-shadow: var(--shadow-md); }
 .vlan-card::before {
   content: '';
   position: absolute;
@@ -303,13 +301,13 @@ body {
 .vlan-card__title {
   font-family: var(--font-display);
   font-size: 1.55rem;
-  color: #f6efe2;
+  color: var(--wine);
   margin: 0 0 0.75rem;
   font-weight: normal;
 }
 .vlan-card__desc {
   font-size: 0.8rem;
-  color: rgba(246,239,226,0.52);
+  color: var(--text-mut);
   line-height: 1.65;
   margin-bottom: 1.25rem;
 }
@@ -319,18 +317,19 @@ body {
   gap: 0.35rem;
   font-family: var(--font-mono);
   font-size: 0.7rem;
-  color: rgba(246,239,226,0.35);
+  color: var(--text-dim);
 }
 
 /* TERMINAL */
 .terminal {
-  background: #0d0a08;
+  background: var(--bg-ink);
   border-radius: var(--r-lg);
   overflow: hidden;
-  border: 1px solid rgba(255,255,255,0.07);
+  border: 1px solid var(--line-2);
   font-family: var(--font-mono);
   font-size: 0.78rem;
   max-width: 720px;
+  box-shadow: var(--shadow-md);
 }
 .terminal__bar {
   display: flex;
@@ -350,12 +349,12 @@ body {
   margin: 0 auto;
 }
 .terminal__body { padding: 1.25rem 1.5rem; line-height: 1.85; }
-.t-comment { color: rgba(184,148,90,0.55); }
+.t-comment { color: rgba(184,148,90,0.65); }
 .t-cmd { color: #7dd3a8; }
 .t-kw { color: #d06b9a; }
-.t-str { color: var(--gold); }
+.t-str { color: #b8945a; }
 .t-num { color: #5ac4ea; }
-.t-prompt { color: rgba(246,239,226,0.3); }
+.t-prompt { color: rgba(246,239,226,0.35); }
 .t-cursor {
   display: inline-block;
   width: 7px; height: 0.85em;
@@ -375,19 +374,19 @@ body {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse 70% 80% at 50% 110%, rgba(138,31,43,0.18), transparent 65%);
+  background: radial-gradient(ellipse 70% 80% at 50% 110%, rgba(138,31,43,0.08), transparent 65%);
   pointer-events: none;
 }
 .cta-section__title {
   font-family: var(--font-display);
   font-size: clamp(2.2rem, 4.5vw, 3.4rem);
-  color: #f6efe2;
+  color: var(--wine);
   margin-bottom: 1rem;
   font-weight: normal;
   position: relative;
 }
 .cta-section__sub {
-  color: rgba(246,239,226,0.5);
+  color: var(--text-mut);
   font-size: 0.95rem;
   margin-bottom: 2.75rem;
   max-width: 380px;
@@ -399,19 +398,20 @@ body {
 
 /* FOOTER */
 footer {
-  border-top: 1px solid rgba(255,255,255,0.06);
+  border-top: 1px solid var(--line);
   padding: 1.75rem 3rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
   font-size: 0.73rem;
-  color: rgba(246,239,226,0.28);
+  color: var(--text-dim);
   flex-wrap: wrap;
   gap: 1rem;
+  background: var(--bg-1);
 }
 
 /* DIVIDER */
-.divider { border: none; height: 1px; background: rgba(255,255,255,0.05); margin: 0; }
+.divider { border: none; height: 1px; background: var(--line); margin: 0; }
 
 /* ANIMATIONS */
 @keyframes fadeUp {
@@ -444,14 +444,19 @@ footer {
 </head>
 <body>
 
+<!-- Fondos decorativos (mismo sistema que app.html) -->
+<div class="bg-grid" aria-hidden="true"></div>
+<div class="bg-halo bg-halo--a" aria-hidden="true"></div>
+<div class="bg-halo bg-halo--b" aria-hidden="true"></div>
+
 <!-- NAV -->
 <nav class="ld-nav" aria-label="Navegación">
   <div class="ld-nav__brand">
     <svg viewBox="0 0 36 36" width="26" height="26" aria-hidden="true">
       <path d="M18 3 L31 7.5 V18 C31 25 25.5 30.5 18 33 C10.5 30.5 5 25 5 18 V7.5 Z"
-            fill="none" stroke="var(--gold)" stroke-width="1.8" stroke-linejoin="round"/>
+            fill="var(--wine-soft)" stroke="var(--wine)" stroke-width="1.8" stroke-linejoin="round"/>
       <path d="M18 11 V25 M11 18 H25" stroke="var(--gold)" stroke-width="1.4" stroke-linecap="round"/>
-      <circle cx="18" cy="18" r="2" fill="#f6efe2"/>
+      <circle cx="18" cy="18" r="2" fill="var(--wine)"/>
     </svg>
     NetLab Explorer
   </div>
@@ -489,26 +494,17 @@ footer {
     <svg viewBox="0 0 480 500" width="480" height="500" style="max-width:100%">
 
       <!-- LINKS -->
-      <!-- Internet → Gateway -->
-      <path d="M 240,52 L 240,108" stroke="rgba(110,74,138,0.5)" stroke-width="2" fill="none" stroke-dasharray="5,4"/>
-      <!-- Gateway → Switch -->
-      <path d="M 240,140 L 240,186" stroke="rgba(184,148,90,0.55)" stroke-width="2.5" fill="none"/>
-      <!-- Switch → Cisco 1 -->
-      <path d="M 214,218 L 120,264" stroke="rgba(31,107,143,0.5)" stroke-width="2" fill="none" stroke-dasharray="5,3"/>
-      <!-- Switch → Cisco 2 -->
-      <path d="M 266,218 L 360,264" stroke="rgba(194,65,122,0.5)" stroke-width="2" fill="none" stroke-dasharray="5,3"/>
-      <!-- Switch → Pi -->
-      <path d="M 240,218 L 240,264" stroke="rgba(47,122,82,0.5)" stroke-width="2" fill="none"/>
-      <!-- Cisco 1 → Patch Panel 1 -->
-      <path d="M 120,296 L 120,340" stroke="rgba(31,107,143,0.35)" stroke-width="1.5" fill="none"/>
-      <!-- Cisco 2 → Patch Panel 2 -->
-      <path d="M 360,296 L 360,340" stroke="rgba(194,65,122,0.35)" stroke-width="1.5" fill="none"/>
-      <!-- Patch 1 → Laptops -->
-      <path d="M 102,360 L 55,410" stroke="rgba(31,107,143,0.3)" stroke-width="1" fill="none"/>
-      <path d="M 115,360 L 105,410" stroke="rgba(31,107,143,0.3)" stroke-width="1" fill="none"/>
-      <path d="M 135,360 L 165,410" stroke="rgba(31,107,143,0.3)" stroke-width="1" fill="none"/>
-      <!-- Patch 2 → Laptop -->
-      <path d="M 360,360 L 360,410" stroke="rgba(194,65,122,0.3)" stroke-width="1" fill="none"/>
+      <path d="M 240,52 L 240,108" stroke="rgba(110,74,138,0.4)" stroke-width="2" fill="none" stroke-dasharray="5,4"/>
+      <path d="M 240,140 L 240,186" stroke="rgba(184,148,90,0.6)" stroke-width="2.5" fill="none"/>
+      <path d="M 214,218 L 120,264" stroke="rgba(31,107,143,0.45)" stroke-width="2" fill="none" stroke-dasharray="5,3"/>
+      <path d="M 266,218 L 360,264" stroke="rgba(194,65,122,0.45)" stroke-width="2" fill="none" stroke-dasharray="5,3"/>
+      <path d="M 240,218 L 240,264" stroke="rgba(47,122,82,0.45)" stroke-width="2" fill="none"/>
+      <path d="M 120,296 L 120,340" stroke="rgba(31,107,143,0.3)" stroke-width="1.5" fill="none"/>
+      <path d="M 360,296 L 360,340" stroke="rgba(194,65,122,0.3)" stroke-width="1.5" fill="none"/>
+      <path d="M 102,360 L 55,410" stroke="rgba(31,107,143,0.25)" stroke-width="1" fill="none"/>
+      <path d="M 115,360 L 105,410" stroke="rgba(31,107,143,0.25)" stroke-width="1" fill="none"/>
+      <path d="M 135,360 L 165,410" stroke="rgba(31,107,143,0.25)" stroke-width="1" fill="none"/>
+      <path d="M 360,360 L 360,410" stroke="rgba(194,65,122,0.25)" stroke-width="1" fill="none"/>
 
       <!-- ANIMATED PACKETS -->
       <circle r="3" fill="#6e4a8a" opacity="0.9">
@@ -532,7 +528,6 @@ footer {
       <circle r="2.5" fill="#c2417a" opacity="0.8">
         <animateMotion path="M 360,296 L 360,340" dur="1.6s" repeatCount="indefinite" begin="2.1s"/>
       </circle>
-      <!-- Return packets (upward) -->
       <circle r="2" fill="#b8945a" opacity="0.5">
         <animateMotion path="M 240,186 L 240,140" dur="1.9s" repeatCount="indefinite" begin="1.4s"/>
       </circle>
@@ -542,27 +537,27 @@ footer {
 
       <!-- NODE: Internet -->
       <g transform="translate(240,36)">
-        <circle r="24" fill="rgba(110,74,138,0.12)" stroke="rgba(110,74,138,0.45)" stroke-width="1.5" stroke-dasharray="5,4"/>
-        <text y="5" text-anchor="middle" dominant-baseline="middle" font-size="18" fill="rgba(110,74,138,0.8)">☁</text>
-        <text y="38" text-anchor="middle" font-size="9" fill="rgba(246,239,226,0.35)" font-family="monospace" letter-spacing="0.06em">internet</text>
+        <circle r="24" fill="rgba(110,74,138,0.08)" stroke="rgba(110,74,138,0.4)" stroke-width="1.5" stroke-dasharray="5,4"/>
+        <text y="5" text-anchor="middle" dominant-baseline="middle" font-size="18" fill="rgba(110,74,138,0.75)">☁</text>
+        <text y="38" text-anchor="middle" font-size="9" fill="rgba(38,25,18,0.4)" font-family="monospace" letter-spacing="0.06em">internet</text>
       </g>
 
       <!-- NODE: Gateway ER605 -->
       <g transform="translate(240,124)">
-        <rect x="-36" y="-18" width="72" height="36" rx="7" fill="rgba(138,31,43,0.18)" stroke="#8a1f2b" stroke-width="1.5"/>
-        <text y="-2" text-anchor="middle" dominant-baseline="middle" font-size="10" fill="#f6efe2" font-weight="bold" font-family="monospace">ER605</text>
-        <text y="10" text-anchor="middle" dominant-baseline="middle" font-size="8" fill="rgba(246,239,226,0.45)" font-family="monospace">Gateway</text>
+        <rect x="-36" y="-18" width="72" height="36" rx="7" fill="rgba(138,31,43,0.10)" stroke="#8a1f2b" stroke-width="1.5"/>
+        <text y="-2" text-anchor="middle" dominant-baseline="middle" font-size="10" fill="#8a1f2b" font-weight="bold" font-family="monospace">ER605</text>
+        <text y="10" text-anchor="middle" dominant-baseline="middle" font-size="8" fill="rgba(38,25,18,0.5)" font-family="monospace">Gateway</text>
         <circle cx="24" cy="-13" r="3" fill="#6e4a8a" opacity="0.7">
           <animate attributeName="opacity" values="0.7;0.2;0.7" dur="2.2s" repeatCount="indefinite"/>
         </circle>
-        <text y="32" text-anchor="middle" font-size="8" fill="rgba(246,239,226,0.28)" font-family="monospace">TP-Link</text>
+        <text y="32" text-anchor="middle" font-size="8" fill="rgba(38,25,18,0.35)" font-family="monospace">TP-Link</text>
       </g>
 
       <!-- NODE: Switch Central SG3428 -->
       <g transform="translate(240,202)">
-        <rect x="-50" y="-18" width="100" height="36" rx="7" fill="rgba(184,148,90,0.14)" stroke="#b8945a" stroke-width="2"/>
-        <text y="-2" text-anchor="middle" dominant-baseline="middle" font-size="10" fill="#b8945a" font-weight="bold" font-family="monospace">SG3428</text>
-        <text y="10" text-anchor="middle" dominant-baseline="middle" font-size="8" fill="rgba(246,239,226,0.45)" font-family="monospace">Switch Central</text>
+        <rect x="-50" y="-18" width="100" height="36" rx="7" fill="rgba(184,148,90,0.12)" stroke="#b8945a" stroke-width="2"/>
+        <text y="-2" text-anchor="middle" dominant-baseline="middle" font-size="10" fill="#8f6e3c" font-weight="bold" font-family="monospace">SG3428</text>
+        <text y="10" text-anchor="middle" dominant-baseline="middle" font-size="8" fill="rgba(38,25,18,0.5)" font-family="monospace">Switch Central</text>
         <circle cx="40" cy="-13" r="3" fill="#b8945a">
           <animate attributeName="opacity" values="1;0.3;1" dur="1.6s" repeatCount="indefinite"/>
         </circle>
@@ -573,77 +568,77 @@ footer {
 
       <!-- NODE: Cisco 1 -->
       <g transform="translate(120,280)">
-        <rect x="-42" y="-20" width="84" height="40" rx="6" fill="rgba(31,107,143,0.14)" stroke="#1f6b8f" stroke-width="1.5"/>
+        <rect x="-42" y="-20" width="84" height="40" rx="6" fill="rgba(31,107,143,0.10)" stroke="#1f6b8f" stroke-width="1.5"/>
         <text y="-5" text-anchor="middle" dominant-baseline="middle" font-size="10" fill="#1f6b8f" font-weight="bold" font-family="monospace">Cisco 1</text>
-        <text y="8" text-anchor="middle" dominant-baseline="middle" font-size="8" fill="rgba(246,239,226,0.4)" font-family="monospace">VLAN 10 · Alumnos</text>
-        <text y="34" text-anchor="middle" font-size="8" fill="rgba(246,239,226,0.25)" font-family="monospace">Gi0/1 trunk</text>
+        <text y="8" text-anchor="middle" dominant-baseline="middle" font-size="8" fill="rgba(38,25,18,0.5)" font-family="monospace">VLAN 10 · Alumnos</text>
+        <text y="34" text-anchor="middle" font-size="8" fill="rgba(38,25,18,0.32)" font-family="monospace">Gi0/1 trunk</text>
       </g>
 
       <!-- NODE: Cisco 2 -->
       <g transform="translate(360,280)">
-        <rect x="-42" y="-20" width="84" height="40" rx="6" fill="rgba(194,65,122,0.14)" stroke="#c2417a" stroke-width="1.5"/>
+        <rect x="-42" y="-20" width="84" height="40" rx="6" fill="rgba(194,65,122,0.10)" stroke="#c2417a" stroke-width="1.5"/>
         <text y="-5" text-anchor="middle" dominant-baseline="middle" font-size="10" fill="#c2417a" font-weight="bold" font-family="monospace">Cisco 2</text>
-        <text y="8" text-anchor="middle" dominant-baseline="middle" font-size="8" fill="rgba(246,239,226,0.4)" font-family="monospace">VLAN 20 · Profesor</text>
-        <text y="34" text-anchor="middle" font-size="8" fill="rgba(246,239,226,0.25)" font-family="monospace">Gi0/1 trunk</text>
+        <text y="8" text-anchor="middle" dominant-baseline="middle" font-size="8" fill="rgba(38,25,18,0.5)" font-family="monospace">VLAN 20 · Profesor</text>
+        <text y="34" text-anchor="middle" font-size="8" fill="rgba(38,25,18,0.32)" font-family="monospace">Gi0/1 trunk</text>
       </g>
 
       <!-- NODE: Raspberry Pi -->
       <g transform="translate(240,280)">
-        <circle r="22" fill="rgba(47,122,82,0.14)" stroke="#2f7a52" stroke-width="1.5"/>
+        <circle r="22" fill="rgba(47,122,82,0.10)" stroke="#2f7a52" stroke-width="1.5"/>
         <text y="2" text-anchor="middle" dominant-baseline="middle" font-size="14" fill="#2f7a52" font-weight="bold" font-family="serif">π</text>
-        <text y="36" text-anchor="middle" font-size="8" fill="rgba(246,239,226,0.32)" font-family="monospace">.30.2</text>
-        <text y="46" text-anchor="middle" font-size="7.5" fill="rgba(47,122,82,0.7)" font-family="monospace">Apache2</text>
+        <text y="36" text-anchor="middle" font-size="8" fill="rgba(38,25,18,0.4)" font-family="monospace">.30.2</text>
+        <text y="46" text-anchor="middle" font-size="7.5" fill="rgba(47,122,82,0.75)" font-family="monospace">Apache2</text>
       </g>
 
       <!-- NODE: Patch Panel 1 -->
       <g transform="translate(120,350)">
-        <rect x="-38" y="-14" width="76" height="28" rx="4" fill="rgba(255,255,255,0.03)" stroke="rgba(31,107,143,0.35)" stroke-width="1"/>
-        <text y="1" text-anchor="middle" dominant-baseline="middle" font-size="8.5" fill="rgba(246,239,226,0.42)" font-family="monospace">Patch Panel</text>
+        <rect x="-38" y="-14" width="76" height="28" rx="4" fill="var(--bg-1,#fbf6ea)" stroke="rgba(31,107,143,0.3)" stroke-width="1"/>
+        <text y="1" text-anchor="middle" dominant-baseline="middle" font-size="8.5" fill="rgba(38,25,18,0.45)" font-family="monospace">Patch Panel</text>
         <g transform="translate(-28,10)">
-          <rect x="0"  y="0" width="8" height="5" rx="1" fill="#1f6b8f" opacity="0.75"/>
-          <rect x="10" y="0" width="8" height="5" rx="1" fill="#1f6b8f" opacity="0.75"/>
-          <rect x="20" y="0" width="8" height="5" rx="1" fill="#1f6b8f" opacity="0.75"/>
-          <rect x="30" y="0" width="8" height="5" rx="1" fill="#1f6b8f" opacity="0.75"/>
-          <rect x="40" y="0" width="8" height="5" rx="1" fill="#1f6b8f" opacity="0.45"/>
+          <rect x="0"  y="0" width="8" height="5" rx="1" fill="#1f6b8f" opacity="0.65"/>
+          <rect x="10" y="0" width="8" height="5" rx="1" fill="#1f6b8f" opacity="0.65"/>
+          <rect x="20" y="0" width="8" height="5" rx="1" fill="#1f6b8f" opacity="0.65"/>
+          <rect x="30" y="0" width="8" height="5" rx="1" fill="#1f6b8f" opacity="0.65"/>
+          <rect x="40" y="0" width="8" height="5" rx="1" fill="#1f6b8f" opacity="0.35"/>
         </g>
       </g>
 
       <!-- NODE: Patch Panel 2 -->
       <g transform="translate(360,350)">
-        <rect x="-38" y="-14" width="76" height="28" rx="4" fill="rgba(255,255,255,0.03)" stroke="rgba(194,65,122,0.35)" stroke-width="1"/>
-        <text y="1" text-anchor="middle" dominant-baseline="middle" font-size="8.5" fill="rgba(246,239,226,0.42)" font-family="monospace">Patch Panel</text>
+        <rect x="-38" y="-14" width="76" height="28" rx="4" fill="var(--bg-1,#fbf6ea)" stroke="rgba(194,65,122,0.3)" stroke-width="1"/>
+        <text y="1" text-anchor="middle" dominant-baseline="middle" font-size="8.5" fill="rgba(38,25,18,0.45)" font-family="monospace">Patch Panel</text>
         <g transform="translate(-6,10)">
-          <rect x="0" y="0" width="8" height="5" rx="1" fill="#c2417a" opacity="0.75"/>
+          <rect x="0" y="0" width="8" height="5" rx="1" fill="#c2417a" opacity="0.65"/>
         </g>
       </g>
 
       <!-- LAPTOPS (VLAN 10) -->
       <g transform="translate(55,425)">
-        <rect x="-18" y="-11" width="36" height="22" rx="3" fill="rgba(31,107,143,0.09)" stroke="rgba(31,107,143,0.38)" stroke-width="1"/>
-        <rect x="-22" y="11" width="44" height="3" rx="1" fill="rgba(31,107,143,0.25)"/>
-        <text y="26" text-anchor="middle" font-size="7.5" fill="rgba(246,239,226,0.28)" font-family="monospace">Mesa 1</text>
+        <rect x="-18" y="-11" width="36" height="22" rx="3" fill="rgba(31,107,143,0.07)" stroke="rgba(31,107,143,0.35)" stroke-width="1"/>
+        <rect x="-22" y="11" width="44" height="3" rx="1" fill="rgba(31,107,143,0.22)"/>
+        <text y="26" text-anchor="middle" font-size="7.5" fill="rgba(38,25,18,0.38)" font-family="monospace">Mesa 1</text>
       </g>
       <g transform="translate(105,425)">
-        <rect x="-18" y="-11" width="36" height="22" rx="3" fill="rgba(31,107,143,0.09)" stroke="rgba(31,107,143,0.38)" stroke-width="1"/>
-        <rect x="-22" y="11" width="44" height="3" rx="1" fill="rgba(31,107,143,0.25)"/>
-        <text y="26" text-anchor="middle" font-size="7.5" fill="rgba(246,239,226,0.28)" font-family="monospace">Mesa 2</text>
+        <rect x="-18" y="-11" width="36" height="22" rx="3" fill="rgba(31,107,143,0.07)" stroke="rgba(31,107,143,0.35)" stroke-width="1"/>
+        <rect x="-22" y="11" width="44" height="3" rx="1" fill="rgba(31,107,143,0.22)"/>
+        <text y="26" text-anchor="middle" font-size="7.5" fill="rgba(38,25,18,0.38)" font-family="monospace">Mesa 2</text>
       </g>
       <g transform="translate(165,425)">
-        <rect x="-18" y="-11" width="36" height="22" rx="3" fill="rgba(31,107,143,0.09)" stroke="rgba(31,107,143,0.38)" stroke-width="1"/>
-        <rect x="-22" y="11" width="44" height="3" rx="1" fill="rgba(31,107,143,0.25)"/>
-        <text y="26" text-anchor="middle" font-size="7.5" fill="rgba(246,239,226,0.28)" font-family="monospace">Mesa 3</text>
+        <rect x="-18" y="-11" width="36" height="22" rx="3" fill="rgba(31,107,143,0.07)" stroke="rgba(31,107,143,0.35)" stroke-width="1"/>
+        <rect x="-22" y="11" width="44" height="3" rx="1" fill="rgba(31,107,143,0.22)"/>
+        <text y="26" text-anchor="middle" font-size="7.5" fill="rgba(38,25,18,0.38)" font-family="monospace">Mesa 3</text>
       </g>
 
       <!-- LAPTOP (VLAN 20) -->
       <g transform="translate(360,425)">
-        <rect x="-18" y="-11" width="36" height="22" rx="3" fill="rgba(194,65,122,0.09)" stroke="rgba(194,65,122,0.38)" stroke-width="1"/>
-        <rect x="-22" y="11" width="44" height="3" rx="1" fill="rgba(194,65,122,0.25)"/>
-        <text y="26" text-anchor="middle" font-size="7.5" fill="rgba(246,239,226,0.28)" font-family="monospace">Mesa 4</text>
+        <rect x="-18" y="-11" width="36" height="22" rx="3" fill="rgba(194,65,122,0.07)" stroke="rgba(194,65,122,0.35)" stroke-width="1"/>
+        <rect x="-22" y="11" width="44" height="3" rx="1" fill="rgba(194,65,122,0.22)"/>
+        <text y="26" text-anchor="middle" font-size="7.5" fill="rgba(38,25,18,0.38)" font-family="monospace">Mesa 4</text>
       </g>
 
       <!-- VLAN labels bottom -->
-      <text x="55" y="465" font-size="8" fill="rgba(31,107,143,0.65)" font-family="monospace">VLAN 10 · Alumnos</text>
-      <text x="326" y="465" font-size="8" fill="rgba(194,65,122,0.65)" font-family="monospace">VLAN 20 · Profesor</text>
+      <text x="30" y="465" font-size="8" fill="rgba(31,107,143,0.7)" font-family="monospace">VLAN 10 · Alumnos</text>
+      <text x="298" y="465" font-size="8" fill="rgba(194,65,122,0.7)" font-family="monospace">VLAN 20 · Profesor</text>
     </svg>
   </div>
 </section>
@@ -684,8 +679,8 @@ footer {
 
   <div class="features">
     <article class="feat">
-      <div class="feat__icon" style="background:rgba(184,148,90,0.1)">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#b8945a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <div class="feat__icon" style="background:rgba(184,148,90,0.12)">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#8f6e3c" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="12" cy="5" r="2"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="19" r="2"/>
           <path d="M12 7v4M12 11l-5 6M12 11l5 6"/>
         </svg>
@@ -694,7 +689,7 @@ footer {
       <div class="feat__desc">Mapa SVG interactivo de toda la red. Clic en nodos y enlaces para ver IPs, VLANs y detalles del equipo.</div>
     </article>
     <article class="feat">
-      <div class="feat__icon" style="background:rgba(31,107,143,0.1)">
+      <div class="feat__icon" style="background:rgba(31,107,143,0.10)">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1f6b8f" stroke-width="1.8" stroke-linecap="round">
           <rect x="3" y="4" width="18" height="4" rx="1"/><rect x="3" y="10" width="18" height="4" rx="1"/>
           <rect x="3" y="16" width="18" height="4" rx="1"/>
@@ -704,7 +699,7 @@ footer {
       <div class="feat__desc">Vista del rack físico con los switches y sus puertos coloreados por VLAN: cyan para alumnos, rosa para profesor.</div>
     </article>
     <article class="feat">
-      <div class="feat__icon" style="background:rgba(194,65,122,0.1)">
+      <div class="feat__icon" style="background:rgba(194,65,122,0.10)">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#c2417a" stroke-width="1.8" stroke-linecap="round">
           <path d="M3 12h18M7 7l-4 5 4 5M17 7l4 5-4 5"/>
         </svg>
@@ -713,7 +708,7 @@ footer {
       <div class="feat__desc">Inspector T568A y T568B: colores de los 8 pines, diferencia entre cable directo y cruzado con diagramas.</div>
     </article>
     <article class="feat">
-      <div class="feat__icon" style="background:rgba(47,122,82,0.1)">
+      <div class="feat__icon" style="background:rgba(47,122,82,0.10)">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2f7a52" stroke-width="1.8" stroke-linecap="round">
           <polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/>
         </svg>
@@ -722,7 +717,7 @@ footer {
       <div class="feat__desc">Comandos reales para Cisco IOS y TP-Link SG3428 con resaltado de sintaxis. VLANs, trunk, acceso, contraseñas.</div>
     </article>
     <article class="feat">
-      <div class="feat__icon" style="background:rgba(138,31,43,0.1)">
+      <div class="feat__icon" style="background:rgba(138,31,43,0.08)">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#8a1f2b" stroke-width="1.8" stroke-linecap="round">
           <circle cx="12" cy="12" r="9"/>
           <path d="M12 8v4l3 3"/>
@@ -841,19 +836,19 @@ footer {
       <h2 class="section__title" id="cli-title">Comandos reales, en la app</h2>
       <p class="section__sub">La vista CLI de NetLab Explorer incluye los comandos exactos para configurar Cisco IOS y el TP-Link SG3428, con resaltado de sintaxis y explicaciones.</p>
       <div style="display:flex;flex-direction:column;gap:0.75rem;margin-top:1.5rem">
-        <div style="display:flex;gap:0.75rem;align-items:center;font-size:0.82rem;color:rgba(246,239,226,0.55)">
+        <div style="display:flex;gap:0.75rem;align-items:center;font-size:0.82rem;color:var(--text-mut)">
           <span style="width:8px;height:8px;border-radius:50%;background:#1f6b8f;flex-shrink:0"></span>
           Cisco 1 — VLAN 10 Alumnos (Fa0/1-5 access)
         </div>
-        <div style="display:flex;gap:0.75rem;align-items:center;font-size:0.82rem;color:rgba(246,239,226,0.55)">
+        <div style="display:flex;gap:0.75rem;align-items:center;font-size:0.82rem;color:var(--text-mut)">
           <span style="width:8px;height:8px;border-radius:50%;background:#c2417a;flex-shrink:0"></span>
           Cisco 2 — VLAN 20 Profesor (Fa0/1 access)
         </div>
-        <div style="display:flex;gap:0.75rem;align-items:center;font-size:0.82rem;color:rgba(246,239,226,0.55)">
+        <div style="display:flex;gap:0.75rem;align-items:center;font-size:0.82rem;color:var(--text-mut)">
           <span style="width:8px;height:8px;border-radius:50%;background:#b8945a;flex-shrink:0"></span>
           TP-Link SG3428 — VLANs + trunk + servidor (baud 38400)
         </div>
-        <div style="display:flex;gap:0.75rem;align-items:center;font-size:0.82rem;color:rgba(246,239,226,0.55)">
+        <div style="display:flex;gap:0.75rem;align-items:center;font-size:0.82rem;color:var(--text-mut)">
           <span style="width:8px;height:8px;border-radius:50%;background:#2f7a52;flex-shrink:0"></span>
           Recuperación de contraseña y hard reset
         </div>
@@ -900,7 +895,7 @@ footer {
 <!-- CTA -->
 <section class="cta-section" aria-labelledby="cta-title">
   <h2 class="cta-section__title" id="cta-title">
-    Empieza a explorar<br><em style="font-style:italic;color:var(--gold)">la red ahora.</em>
+    Empieza a explorar<br><em style="font-style:italic;color:var(--gold-deep)">la red ahora.</em>
   </h2>
   <p class="cta-section__sub">
     Sin instalación. Sin internet. Solo abre el navegador en cualquier laptop del laboratorio y navega a la IP del servidor.
@@ -908,7 +903,7 @@ footer {
   <a href="app.html" class="ld-btn ld-btn--gold ld-btn--lg" style="display:inline-flex;position:relative">
     Abrir NetLab Explorer →
   </a>
-  <div style="margin-top:1.5rem;font-family:var(--font-mono);font-size:0.75rem;color:rgba(246,239,226,0.28)">
+  <div style="margin-top:1.5rem;font-family:var(--font-mono);font-size:0.75rem;color:var(--text-dim)">
     http://192.168.30.2/
   </div>
 </section>
@@ -916,7 +911,7 @@ footer {
 <!-- FOOTER -->
 <footer>
   <div>
-    <strong style="color:var(--gold);font-family:var(--font-display)">NetLab Explorer</strong>
+    <strong style="color:var(--wine);font-family:var(--font-display)">NetLab Explorer</strong>
     <span style="margin-left:0.75rem">ITSM · Laboratorio de Redes</span>
   </div>
   <div style="display:flex;gap:2rem;align-items:center">
@@ -926,11 +921,5 @@ footer {
   </div>
 </footer>
 
-<style>
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0; }
-}
-</style>
 </body>
 </html>
