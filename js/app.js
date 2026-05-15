@@ -65,7 +65,7 @@ var NODES = [
       'Gi0/1': { mode: 'trunk',  vlans: [10,20,30], desc: 'Uplink Trunk → SW Central P24' }
     }
   },
-  { id: 'patch',      type: 'patch',         label: 'Patch Panel',           sub: '6 puertos · T568B',              x: 700,  y: 620,
+  { id: 'patch',      type: 'patch',         label: 'Patch Panel',           sub: '48 puertos · T568B',             x: 700,  y: 620,
     vlans: [10, 20],
     info: 'Distribución física. El frente recibe Patch Cords desde los Cisco; el reverso baja por canaletas a los faceplates de cada mesa.',
     panelMap: [
@@ -691,6 +691,8 @@ function renderRacks(containerId) {
     var n = nodeById(id); if (!n) return;
     root.appendChild(buildRack(n));
   });
+  var pp = nodeById('patch');
+  if (pp) root.appendChild(buildPatchPanel(pp));
 }
 
 function buildRack(node) {
@@ -717,6 +719,51 @@ function buildRack(node) {
   } else {
     for (var j = 1; j <= 24; j++) portsHost.appendChild(buildPort('0/'+j, j, node));
     ['Gi0/1','Gi0/2'].forEach(function(key,idx){ portsHost.appendChild(buildPort(key,'G'+(idx+1),node)); });
+  }
+  return div;
+}
+
+function buildPatchPanel(node) {
+  var panelIndex = {};
+  (node.panelMap || []).forEach(function(e){ panelIndex[e.port] = e; });
+
+  var iStyle = 'display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid currentColor;margin-right:4px';
+  var div = document.createElement('div');
+  div.className = 'rack';
+  div.innerHTML =
+    '<div class="rack__head">'+
+      '<div><div class="rack__name">'+escHtml(node.label)+'</div>'+
+      '<div class="rack__sub">'+escHtml(node.sub)+'</div></div>'+
+      '<div class="rack__sub">Pasivo · Distribución física · T568B</div>'+
+    '</div>'+
+    '<div class="rack__bezel">'+
+      '<div class="rack__brand">CAT5e<br>48P</div>'+
+      '<div class="rack__ports rack__ports--patch" data-ports></div>'+
+      '<div></div>'+
+    '</div>'+
+    '<div class="rack__legend">'+
+      '<span style="color:var(--vlan-10)"><i style="'+iStyle+'"></i>VLAN 10 Alumnos</span>'+
+      '<span style="color:var(--vlan-20)"><i style="'+iStyle+'"></i>VLAN 20 Profesor</span>'+
+      '<span style="color:var(--text-mut)"><i style="'+iStyle+'"></i>Libre</span>'+
+    '</div>';
+
+  var portsHost = div.querySelector('[data-ports]');
+  for (var i = 1; i <= 48; i++) {
+    var entry = panelIndex[i];
+    var p = document.createElement('button');
+    p.className = 'port';
+    if (entry) {
+      p.dataset.state = 'used';
+      p.dataset.vlan = String(entry.vlan);
+      p.innerHTML = '<span class="port__num">'+i+'</span>'+
+        '<span class="port__tip"><strong>Puerto '+i+'</strong><br>'+
+        escHtml(entry.from)+'<br>→ '+escHtml(entry.to)+'<br>VLAN '+entry.vlan+'</span>';
+    } else {
+      p.dataset.state = 'free';
+      p.innerHTML = '<span class="port__num">'+i+'</span>'+
+        '<span class="port__tip"><strong>Puerto '+i+'</strong><br>Sin uso</span>';
+    }
+    portsHost.appendChild(p);
   }
   return div;
 }

@@ -344,6 +344,16 @@
   gap: 5px 6px;
   margin-top: 14px;
 }
+.rack__ports--patch {
+  grid-template-columns: repeat(24, 1fr);
+  gap: 3px 3px;
+}
+.rack__ports--patch .port {
+  aspect-ratio: 1 / 1.4;
+}
+.rack__ports--patch .port__num {
+  font-size: 7px;
+}
 .port {
   position: relative;
   aspect-ratio: 1.6 / 1;
